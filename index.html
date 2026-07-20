@@ -459,7 +459,7 @@
         </div>
         <div class="field-full">
           <label>Email liên hệ</label>
-          <input type="email" id="email" placeholder="VD: [email protected]">
+          <input type="email" id="email" placeholder="VD: contact@doanhnghiep.com">
         </div>
 
         <div class="field-full">
@@ -602,11 +602,11 @@
 </footer>
 
 <script>
-  // ---- Config: cập nhật các giá trị này theo thông tin thật ----
+  // ---- Config: URL Google Apps Script chính thức của bạn ----
   const CONFIG = {
     GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxJLZPzDgY_uyvxp_pFxQAdf_y_XZLAT6PPIUx1_O5zji7HF0a6DRVOCrltNhNZUGcY/exec",
-    ZALO_OA_URL: "https://zalo.me/0393939488",
-    FACEBOOK_URL: "https://facebook.com/msmvquocgia"
+    ZALO_OA_URL: "https://zalo.me/0988888888",
+    FACEBOOK_URL: "https://facebook.com/nbc.gov.vn"
   };
   document.getElementById('zaloHeroBtn').href = CONFIG.ZALO_OA_URL;
   document.getElementById('zaloFormBtn').href = CONFIG.ZALO_OA_URL;
@@ -642,22 +642,43 @@
       return;
     }
 
-    const elabelInfo = Array.from(document.querySelectorAll('input[name=elabelInfo]:checked')).map(i => i.value);
+    // Thu thập danh sách dịch vụ được chọn & chi tiết từng dịch vụ
+    const selectedServices = [];
+    const detailsList = [];
 
+    if (document.querySelector('[data-need=txng]').checked) {
+      selectedServices.push("Truy xuất nguồn gốc");
+      const qty = document.getElementById('txngQty').value || "Chưa chọn SL";
+      const process = (document.querySelector('input[name=txngProcess]:checked') || {}).value || "Chưa chọn quy trình";
+      detailsList.push(`[TXNG: SL ${qty}, Quy trình: ${process}]`);
+    }
+
+    if (document.querySelector('[data-need=elabel]').checked) {
+      selectedServices.push("Nhãn điện tử");
+      const qty = document.getElementById('elabelQty').value || "Chưa chọn SL";
+      const info = Array.from(document.querySelectorAll('input[name=elabelInfo]:checked')).map(i => i.value).join(', ') || "Chưa chọn thông tin";
+      detailsList.push(`[Nhãn điện tử: SL ${qty}, Hiển thị: ${info}]`);
+    }
+
+    if (document.querySelector('[data-need=temgia]').checked) {
+      selectedServices.push("Tem chống giả");
+      const qty = document.getElementById('temgiaQty').value.trim() || "Chưa nhập SL";
+      const type = (document.querySelector('input[name=temgiaType]:checked') || {}).value || "Chưa chọn loại hình";
+      detailsList.push(`[Tem chống giả: SL ${qty}, Loại hình: ${type}]`);
+    }
+
+    if (selectedServices.length === 0) {
+      alert('Vui lòng tích chọn ít nhất 1 dịch vụ bạn cần tư vấn!');
+      return;
+    }
+
+    // Chuẩn hóa dữ liệu theo chuẩn JSON khớp với Apps Script
     const payload = {
-      timestamp: new Date().toISOString(),
-      companyName,
-      phone,
+      companyName: companyName,
+      phone: phone,
       email: document.getElementById('email').value.trim(),
-      needTruyXuatNguonGoc: document.querySelector('[data-need=txng]').checked,
-      txngQty: document.getElementById('txngQty').value,
-      txngProcess: (document.querySelector('input[name=txngProcess]:checked') || {}).value || '',
-      needElabel: document.querySelector('[data-need=elabel]').checked,
-      elabelQty: document.getElementById('elabelQty').value,
-      elabelInfo: elabelInfo.join(', '),
-      needTemChongGia: document.querySelector('[data-need=temgia]').checked,
-      temgiaQty: document.getElementById('temgiaQty').value,
-      temgiaType: (document.querySelector('input[name=temgiaType]:checked') || {}).value || '',
+      services: selectedServices.join(', '),
+      details: detailsList.join(' | '),
       note: document.getElementById('note').value.trim()
     };
 
@@ -665,7 +686,7 @@
     submitBtn.textContent = 'ĐANG GỬI...';
 
     try {
-      await fetch(https://script.google.com/macros/s/AKfycbxJLZPzDgY_uyvxp_pFxQAdf_y_XZLAT6PPIUx1_O5zji7HF0a6DRVOCrltNhNZUGcY/exec, {
+      await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
