@@ -631,10 +631,6 @@
   const form = document.getElementById('leadForm');
   const submitBtn = document.getElementById('submitBtn');
 
-// ---- Form submit ----
-  const form = document.getElementById('leadForm');
-  const submitBtn = document.getElementById('submitBtn');
-
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -687,11 +683,11 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'ĐANG GỬI...';
 
-    // Gửi dạng no-cors và bật Modal
+    // Gửi dạng no-cors và bật Modal, thêm thiết lập 'text/plain;charset=utf-8' để tương thích Apps Script
     fetch(CONFIG.GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     })
     .then(() => {
