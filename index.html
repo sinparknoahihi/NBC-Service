@@ -605,7 +605,7 @@
   // ---- Config: URL Google Apps Script chính thức của bạn ----
   const CONFIG = {
     GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxJLZPzDgY_uyvxp_pFxQAdf_y_XZLAT6PPIUx1_O5zji7HF0a6DRVOCrltNhNZUGcY/exec",
-    ZALO_OA_URL: "https://zalo.me/0988888888",
+    ZALO_OA_URL: "https://zalo.me/0988888888", // Sửa lại SĐT ở đây
     FACEBOOK_URL: "https://facebook.com/nbc.gov.vn"
   };
   document.getElementById('zaloHeroBtn').href = CONFIG.ZALO_OA_URL;
@@ -631,7 +631,7 @@
   const form = document.getElementById('leadForm');
   const submitBtn = document.getElementById('submitBtn');
 
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', function(e) {
     e.preventDefault();
 
     const companyName = document.getElementById('companyName').value.trim();
@@ -642,28 +642,35 @@
       return;
     }
 
-    // Thu thập danh sách dịch vụ được chọn & chi tiết từng dịch vụ
     const selectedServices = [];
     const detailsList = [];
 
-    if (document.querySelector('[data-need=txng]').checked) {
+    // Lấy thông tin TXNG
+    const chkTxng = document.querySelector('[data-need="txng"]');
+    if (chkTxng && chkTxng.checked) {
       selectedServices.push("Truy xuất nguồn gốc");
       const qty = document.getElementById('txngQty').value || "Chưa chọn SL";
-      const process = (document.querySelector('input[name=txngProcess]:checked') || {}).value || "Chưa chọn quy trình";
+      const processEl = document.querySelector('input[name="txngProcess"]:checked');
+      const process = processEl ? processEl.value : "Chưa chọn quy trình";
       detailsList.push(`[TXNG: SL ${qty}, Quy trình: ${process}]`);
     }
 
-    if (document.querySelector('[data-need=elabel]').checked) {
+    // Lấy thông tin Elabel
+    const chkElabel = document.querySelector('[data-need="elabel"]');
+    if (chkElabel && chkElabel.checked) {
       selectedServices.push("Nhãn điện tử");
       const qty = document.getElementById('elabelQty').value || "Chưa chọn SL";
-      const info = Array.from(document.querySelectorAll('input[name=elabelInfo]:checked')).map(i => i.value).join(', ') || "Chưa chọn thông tin";
+      const info = Array.from(document.querySelectorAll('input[name="elabelInfo"]:checked')).map(i => i.value).join(', ') || "Chưa chọn thông tin";
       detailsList.push(`[Nhãn điện tử: SL ${qty}, Hiển thị: ${info}]`);
     }
 
-    if (document.querySelector('[data-need=temgia]').checked) {
+    // Lấy thông tin Tem gia
+    const chkTemgia = document.querySelector('[data-need="temgia"]');
+    if (chkTemgia && chkTemgia.checked) {
       selectedServices.push("Tem chống giả");
       const qty = document.getElementById('temgiaQty').value.trim() || "Chưa nhập SL";
-      const type = (document.querySelector('input[name=temgiaType]:checked') || {}).value || "Chưa chọn loại hình";
+      const typeEl = document.querySelector('input[name="temgiaType"]:checked');
+      const type = typeEl ? typeEl.value : "Chưa chọn loại hình";
       detailsList.push(`[Tem chống giả: SL ${qty}, Loại hình: ${type}]`);
     }
 
@@ -672,7 +679,6 @@
       return;
     }
 
-    // Chuẩn hóa dữ liệu theo chuẩn JSON khớp với Apps Script
     const payload = {
       companyName: companyName,
       phone: phone,
@@ -685,25 +691,30 @@
     submitBtn.disabled = true;
     submitBtn.textContent = 'ĐANG GỬI...';
 
-    try {
-      await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+    // Xử lý fetch dạng no-cors và bật Modal ngay khi promise resolve
+    fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      // Khi gửi dạng no-cors, nếu không có lỗi mạng thì form đã đi tới đích thành công
       document.getElementById('successModal').classList.add('show');
       form.reset();
       document.querySelectorAll('.need-group.open').forEach(g => g.classList.remove('open'));
-    } catch (err) {
-      alert('Có lỗi xảy ra, vui lòng thử lại hoặc liên hệ trực tiếp qua Zalo.');
+    })
+    .catch(err => {
+      alert('Có lỗi mạng xảy ra khi gửi. Vui lòng thử lại hoặc liên hệ Zalo trực tiếp!');
       console.error(err);
-    } finally {
+    })
+    .finally(() => {
       submitBtn.disabled = false;
       submitBtn.textContent = 'GỬI YÊU CẦU TƯ VẤN';
-    }
+    });
   });
 
+  // Sự kiện đóng Modal
   document.getElementById('closeModal').addEventListener('click', () => {
     document.getElementById('successModal').classList.remove('show');
   });
