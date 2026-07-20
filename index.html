@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NBC/GS1 Vietnam — Giải pháp Truy xuất nguồn gốc, Tem chống giả & Nhãn điện tử</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #0B2A5B;
+    --navy-deep: #071B3D;
+    --gs1-green: #1E8449;
+    --gs1-green-light: #E8F5EC;
+    --alert-red: #C0392B;
+    --paper: #F5F7FA;
+    --line: #DCE3EC;
+    --ink: #17233D;
+    --ink-soft: #5A6B85;
+    --white: #FFFFFF;
+    --radius: 14px;
+    --shadow: 0 12px 32px -12px rgba(11,42,91,0.22);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Be Vietnam Pro', system-ui, sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  .container{ max-width:1140px; margin:0 auto; padding:0 24px; }
+  .mono{ font-family:'JetBrains Mono', monospace; letter-spacing:0.04em; }
+  h1,h2,h3{ font-weight:800; letter-spacing:-0.01em; }
+  section{ padding:72px 0; }
+  @media (max-width:640px){ section{ padding:48px 0; } }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,0.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 24px; max-width:1140px; margin:0 auto;
+  }
+  .brand{ display:flex; align-items:center; gap:14px; }
+  .brand-logos{ display:flex; align-items:center; gap:12px; }
+  .brand-logos img{ display:block; }
+  .logo-nbc{ height:30px; width:auto; }
+  .logo-gs1{ height:38px; width:auto; }
+  .logo-divider{ width:1px; height:26px; background:var(--line); }
+  .brand-text{ font-size:13px; color:var(--ink-soft); font-weight:600; line-height:1.3; }
+  .brand-text strong{ display:block; color:var(--navy); font-size:15px; font-weight:800; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 22px; border-radius:999px; font-weight:700; font-size:14.5px;
+    cursor:pointer; border:none; transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primary{ background:var(--gs1-green); color:#fff; box-shadow:0 10px 24px -8px rgba(30,132,73,0.55); }
+  .btn-outline{ background:transparent; color:var(--navy); border:1.5px solid var(--navy); }
+  .btn-zalo{ background:#0068FF; color:#fff; box-shadow:0 10px 24px -8px rgba(0,104,255,0.5); }
+  header .btn{ padding:10px 18px; font-size:13.5px; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(160deg, var(--navy-deep) 0%, var(--navy) 62%, #133a7a 100%);
+    color:#fff; position:relative; overflow:hidden;
+    padding:88px 0 72px;
+  }
+  .hero::after{
+    content:""; position:absolute; right:-120px; top:-120px; width:420px; height:420px;
+    background:radial-gradient(circle, rgba(30,132,73,0.35), transparent 70%);
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:center; position:relative; z-index:2; }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.25);
+    padding:7px 14px; border-radius:999px; font-size:12.5px; font-weight:700;
+    letter-spacing:0.04em; color:#CFE8D8; margin-bottom:22px;
+  }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:#4CD97B; }
+  .hero h1{ font-size:44px; line-height:1.14; margin-bottom:18px; }
+  .hero h1 em{ font-style:normal; color:#4CD97B; }
+  @media (max-width:640px){ .hero h1{ font-size:30px; } }
+  .hero p.lead{ font-size:17px; color:#C9D5EA; max-width:520px; margin-bottom:30px; }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+  .hero-stamp{
+    position:relative; background:#fff; border-radius:20px; padding:18px;
+    box-shadow:var(--shadow); transform:rotate(1.5deg);
+  }
+  .hero-stamp img{ border-radius:12px; }
+  .hero-stamp .badge{
+    position:absolute; top:-14px; left:-14px; background:var(--alert-red); color:#fff;
+    font-size:12px; font-weight:800; padding:8px 14px; border-radius:999px;
+    box-shadow:0 8px 18px -6px rgba(192,57,43,0.6); transform:rotate(-6deg);
+  }
+
+  /* ---------- Alert banner (Nghị định) ---------- */
+  .alert-banner{
+    background:var(--paper); border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .alert-inner{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
+  @media (max-width:900px){ .alert-inner{ grid-template-columns:1fr; } }
+  .alert-inner img{ border-radius:var(--radius); box-shadow:var(--shadow); }
+  .alert-copy .kicker{ color:var(--alert-red); font-weight:800; font-size:13px; letter-spacing:0.06em; margin-bottom:10px; }
+  .alert-copy h2{ font-size:28px; color:var(--navy); margin-bottom:14px; }
+  .alert-list{ list-style:none; display:grid; gap:12px; margin-top:18px; }
+  .alert-list li{ display:flex; gap:12px; align-items:flex-start; font-size:15px; color:var(--ink-soft); }
+  .alert-list li svg{ flex-shrink:0; margin-top:2px; }
+
+  /* ---------- Section heading ---------- */
+  .section-head{ text-align:center; max-width:640px; margin:0 auto 44px; }
+  .section-head .kicker{ color:var(--gs1-green); font-weight:800; font-size:13px; letter-spacing:0.08em; margin-bottom:10px; }
+  .section-head h2{ font-size:30px; color:var(--navy); }
+  @media (max-width:640px){ .section-head h2{ font-size:24px; } }
+
+  /* ---------- Stamp badge (signature element) ---------- */
+  .stamp{
+    width:64px; height:64px; border-radius:50%; border:2px dashed var(--gs1-green);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    transform:rotate(-6deg); background:var(--gs1-green-light);
+  }
+  .stamp svg{ width:28px; height:28px; }
+  .card .stamp{ margin-bottom:18px; }
+
+  /* ---------- Solutions cards ---------- */
+  .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+  @media (max-width:900px){ .cards{ grid-template-columns:1fr; } }
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:var(--radius);
+    padding:0 0 30px; box-shadow:0 2px 10px -6px rgba(11,42,91,0.08);
+    transition:transform .2s ease, box-shadow .2s ease; overflow:hidden;
+  }
+  .card:hover{ transform:translateY(-4px); box-shadow:var(--shadow); }
+  .card-body{ padding:26px 26px 0; }
+  .card-visual{
+    height:132px; position:relative; overflow:hidden;
+    background:linear-gradient(135deg, var(--navy) 0%, #14356e 100%);
+  }
+  .card-visual svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .card .stamp{ position:relative; z-index:2; margin-top:-32px; margin-bottom:16px; background:#fff; box-shadow:0 6px 16px -6px rgba(11,42,91,0.3); }
+  .card h3{ font-size:19px; color:var(--navy); margin-bottom:10px; }
+  .card p{ font-size:14.5px; color:var(--ink-soft); margin-bottom:16px; }
+  .card ul{ list-style:none; display:grid; gap:9px; }
+  .card ul li{ display:flex; gap:9px; font-size:13.8px; color:var(--ink); align-items:flex-start; }
+  .card ul li svg{ flex-shrink:0; margin-top:3px; color:var(--gs1-green); }
+  .tag{
+    display:inline-block; margin-top:16px; font-size:11.5px; font-weight:800;
+    color:var(--navy); background:var(--paper); border:1px solid var(--line);
+    padding:5px 10px; border-radius:6px; letter-spacing:0.03em;
+  }
+
+  /* ---------- E-label demo ---------- */
+  .demo{ background:var(--navy-deep); color:#fff; }
+  .demo-grid{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:48px; align-items:center; }
+  @media (max-width:900px){ .demo-grid{ grid-template-columns:1fr; } }
+  .demo-qr{
+    background:#fff; border-radius:20px; padding:26px; text-align:center;
+    box-shadow:var(--shadow); max-width:300px; margin:0 auto;
+  }
+  .demo-qr img{ width:100%; border-radius:8px; }
+  .demo-qr .cap{ margin-top:14px; font-size:12.5px; color:var(--ink-soft); }
+  .demo-copy h2{ font-size:27px; margin-bottom:14px; }
+  .demo-copy p{ color:#C9D5EA; margin-bottom:22px; font-size:15px; }
+  .demo-link{
+    display:inline-flex; align-items:center; gap:10px; background:var(--gs1-green);
+    padding:13px 22px; border-radius:999px; font-weight:700; font-size:14.5px; color:#fff;
+    box-shadow:0 10px 24px -8px rgba(30,132,73,0.55);
+  }
+  .demo-url{
+    margin-top:16px; font-size:12.5px; color:#9FB3D6; word-break:break-all;
+  }
+
+  /* ---------- Form ---------- */
+  .form-section{ background:var(--paper); }
+  .form-wrap{
+    background:#fff; border-radius:20px; box-shadow:var(--shadow);
+    padding:40px; border:1px solid var(--line);
+  }
+  @media (max-width:640px){ .form-wrap{ padding:24px 18px; } }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+  @media (max-width:640px){ .field-row{ grid-template-columns:1fr; } }
+  label{ display:block; font-size:13.5px; font-weight:700; color:var(--navy); margin-bottom:7px; }
+  label .req{ color:var(--alert-red); }
+  input[type=text], input[type=tel], input[type=email], textarea, select{
+    width:100%; padding:12px 14px; border-radius:10px; border:1.5px solid var(--line);
+    font-family:inherit; font-size:14.5px; color:var(--ink); background:#fff;
+    transition:border-color .15s ease;
+  }
+  input:focus, textarea:focus, select:focus{ outline:none; border-color:var(--gs1-green); }
+  textarea{ resize:vertical; min-height:90px; }
+  .field-full{ margin-bottom:18px; }
+
+  .need-group{ border:1.5px solid var(--line); border-radius:14px; margin-bottom:16px; overflow:hidden; }
+  .need-head{
+    display:flex; align-items:center; gap:12px; padding:16px 18px; cursor:pointer;
+    background:#fff; user-select:none;
+  }
+  .need-head input[type=checkbox]{ width:19px; height:19px; accent-color:var(--gs1-green); flex-shrink:0; }
+  .need-head .stamp-mini{
+    width:34px; height:34px; border-radius:50%; background:var(--gs1-green-light);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .need-head .stamp-mini svg{ width:16px; height:16px; color:var(--gs1-green); }
+  .need-title{ font-weight:700; font-size:15px; color:var(--navy); flex:1; }
+  .chevron{ transition:transform .2s ease; color:var(--ink-soft); }
+  .need-group.open .chevron{ transform:rotate(180deg); }
+  .need-body{
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+    background:var(--paper); border-top:1px solid var(--line);
+  }
+  .need-group.open .need-body{ max-height:400px; }
+  .need-body-inner{ padding:18px; display:grid; gap:16px; }
+  .radio-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  .chip{
+    font-size:13px; padding:8px 14px; border-radius:999px; border:1.5px solid var(--line);
+    cursor:pointer; background:#fff; font-weight:600; color:var(--ink-soft);
+  }
+  .chip input{ display:none; }
+  .chip:has(input:checked){ background:var(--gs1-green); border-color:var(--gs1-green); color:#fff; }
+
+  .form-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; align-items:center; }
+  .btn-submit{
+    background:var(--navy); color:#fff; font-size:16px; padding:15px 32px;
+    box-shadow:0 12px 26px -8px rgba(11,42,91,0.5);
+  }
+  .form-note{ font-size:12.5px; color:var(--ink-soft); margin-top:14px; }
+
+  /* Success modal */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(7,27,61,0.55); display:none;
+    align-items:center; justify-content:center; z-index:100; padding:20px;
+  }
+  .modal-overlay.show{ display:flex; }
+  .modal{
+    background:#fff; border-radius:18px; padding:36px 30px; max-width:400px; text-align:center;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.4);
+  }
+  .modal .stamp{ margin:0 auto 18px; }
+  .modal h3{ color:var(--navy); font-size:20px; margin-bottom:10px; }
+  .modal p{ color:var(--ink-soft); font-size:14.5px; margin-bottom:22px; }
+
+  /* ---------- Footer ---------- */
+  footer{ background:var(--navy-deep); color:#C9D5EA; padding:48px 0 28px; }
+  .footer-grid{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; }
+  .footer-brand{ display:flex; align-items:center; gap:14px; }
+  .footer-logos{ display:flex; align-items:center; gap:12px; background:#fff; border-radius:10px; padding:8px 14px; }
+  .footer-logos img{ display:block; }
+  .footer-logos .logo-nbc{ height:24px; }
+  .footer-logos .logo-gs1{ height:30px; }
+  .footer-logos .logo-divider{ height:20px; background:var(--line); }
+  .socials{ display:flex; gap:12px; }
+  .socials a{
+    width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.08);
+    display:flex; align-items:center; justify-content:center; transition:background .15s ease;
+  }
+  .socials a:hover{ background:var(--gs1-green); }
+  .footer-bottom{ text-align:center; font-size:12.5px; color:#7C8FB3; margin-top:32px; border-top:1px solid rgba(255,255,255,0.08); padding-top:20px; }
+
+  .visually-hidden{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+  :focus-visible{ outline:3px solid #4CD97B; outline-offset:2px; }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-logos">
+        <img src="assets/logo-nbc.png" alt="NBC" class="logo-nbc">
+        <span class="logo-divider"></span>
+        <img src="assets/logo-gs1.png" alt="GS1 Vietnam" class="logo-gs1">
+      </div>
+      <span class="brand-text"><strong>Trung tâm Mã số Mã vạch Quốc gia</strong>Dịch vụ gia tăng NBC · GS1 Vietnam</span>
+    </div>
+    <a href="#form" class="btn btn-primary">Đăng ký tư vấn</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow"><span class="dot"></span> Nghị định 37/2026/NĐ-CP đã có hiệu lực</span>
+      <h1>Minh bạch sản phẩm &amp; <em>chuyển đổi số</em> cho doanh nghiệp của bạn</h1>
+      <p class="lead">NBC/GS1 Vietnam đồng hành cùng doanh nghiệp triển khai Truy xuất nguồn gốc, Tem chống giả và Nhãn điện tử — đúng chuẩn quốc gia, sẵn sàng cho xuất khẩu.</p>
+      <div class="hero-actions">
+        <a href="#form" class="btn btn-primary">Đăng ký tư vấn ngay</a>
+        <a href="#" class="btn btn-zalo" id="zaloHeroBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.86 1.5 5.41 3.84 7.08-.13 1.02-.5 2.28-1.34 3.42 0 0 2.3-.36 4.3-1.85.98.26 2.03.4 3.2.4 5.52 0 10-4.03 10-9C22 6.03 17.52 2 12 2Z" fill="white"/></svg>
+          Liên hệ Zalo tư vấn
+        </a>
+      </div>
+    </div>
+    <div class="hero-stamp">
+      <span class="badge">TỪ 01/07 — BẮT BUỘC</span>
+      <img src="assets/truy-xuat-nguon-goc.jpg" alt="Truy xuất nguồn gốc sản phẩm qua mã QR">
+    </div>
+  </div>
+</section>
+
+<!-- ============ ALERT / COMPLIANCE ============ -->
+<section class="alert-banner">
+  <div class="container alert-inner">
+    <div class="alert-copy">
+      <div class="kicker">RỦI RO KHI CHƯA TRIỂN KHAI</div>
+      <h2>Không còn là lựa chọn — mà là trách nhiệm bắt buộc</h2>
+      <p style="color:var(--ink-soft); font-size:15px;">Theo Nghị định 37/2026/NĐ-CP, Truy xuất nguồn gốc là yêu cầu bắt buộc với các ngành hàng rủi ro cao (thực phẩm, dược phẩm, vật tư nông nghiệp...). Doanh nghiệp chưa tuân thủ có thể đối mặt với:</p>
+      <ul class="alert-list">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#C0392B"/><path d="M8 8l8 8M16 8l-8 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Xử phạt hành chính nặng, đình chỉ hoạt động</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#C0392B"/><path d="M8 8l8 8M16 8l-8 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Nguy cơ thu hồi hàng hóa, thiệt hại hàng tỷ đồng</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#C0392B"/><path d="M8 8l8 8M16 8l-8 8" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg> Mất uy tín thương hiệu, bị người tiêu dùng tẩy chay</li>
+      </ul>
+    </div>
+    <img src="assets/truy-xuat-nguon-goc.jpg" alt="Nghị định 37/2026 truy xuất nguồn gốc bắt buộc">
+  </div>
+</section>
+
+<!-- ============ 3 SOLUTIONS ============ -->
+<section id="solutions">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">GIẢI PHÁP TRỌNG TÂM</div>
+      <h2>3 dịch vụ gia tăng cho doanh nghiệp</h2>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-visual">
+          <img src="assets/card-txng.jpg" alt="Quét mã QR truy xuất nguồn gốc sản phẩm" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="card-body">
+        <div class="stamp"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v6c0 5-3.8 8.5-9 10-5.2-1.5-9-5-9-10V7Z" stroke="#1E8449" stroke-width="1.8"/><path d="M9 12l2 2 4-4" stroke="#1E8449" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Truy xuất nguồn gốc</h3>
+        <p>Minh bạch chuỗi cung ứng, tuân thủ tiêu chuẩn quốc gia &amp; quốc tế.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Tuân thủ Nghị định 37/2026/NĐ-CP</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Gia tăng giá trị nông sản, hàng xuất khẩu</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Xác thực nguồn gốc qua mã QR</li>
+        </ul>
+        <span class="tag">GS1 STANDARD</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-visual">
+          <img src="assets/card-temgia.jpg" alt="Tem chống hàng giả NBC GS1 với mã QR xác thực" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div class="card-body">
+        <div class="stamp"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4Z" stroke="#1E8449" stroke-width="1.8"/><circle cx="12" cy="11" r="2.6" stroke="#1E8449" stroke-width="1.8"/></svg></div>
+        <h3>Tem chống hàng giả</h3>
+        <p>Bảo vệ thương hiệu, xác thực điện tử thông minh, ngăn hàng nhái tức thì.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Bảo mật tuyệt đối, khó sao chép</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Nâng cao uy tín thương hiệu</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Xác thực qua QR SMS / QR ma trận</li>
+        </ul>
+        <span class="tag">BỘ CÔNG AN · IBĐ</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-visual">
+          <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice">
+            <defs><pattern id="gridELB" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0H0V18" fill="none" stroke="rgba(255,255,255,0.08)"/></pattern></defs>
+            <rect width="400" height="132" fill="url(#gridELB)"/>
+            <g transform="translate(150,10)">
+              <rect x="0" y="0" width="58" height="112" rx="10" fill="none" stroke="#4CD97B" stroke-width="2.2"/>
+              <rect x="10" y="14" width="38" height="26" rx="2" fill="none" stroke="#4CD97B" stroke-width="1.6"/>
+              <path d="M10 50h38M10 58h38M10 66h24" stroke="#4CD97B" stroke-width="1.6" stroke-linecap="round"/>
+              <rect x="10" y="78" width="38" height="8" rx="4" fill="#4CD97B" opacity="0.5"/>
+            </g>
+            <g stroke="rgba(255,255,255,0.5)" stroke-width="1.6" fill="none" stroke-linecap="round">
+              <path d="M222 40q14-10 0-20"/><path d="M232 48q26-18 0-36"/>
+            </g>
+            <text x="200" y="118" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="monospace" letter-spacing="2">CẬP NHẬT TỨC THỜI · ĐA NGÔN NGỮ</text>
+          </svg>
+        </div>
+        <div class="card-body">
+        <div class="stamp"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#1E8449" stroke-width="1.8"/><path d="M8 8h3v3H8V8Zm5 0h3M8 14h8M8 17h5" stroke="#1E8449" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Nhãn điện tử (E-label)</h3>
+        <p>Hiển thị thông tin sản phẩm linh hoạt, cập nhật tức thời, tối ưu chi phí in ấn.</p>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Cập nhật thành phần, HDSD tức thời</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> Giảm chi phí in ấn bao bì</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg> QR động, đa ngôn ngữ</li>
+        </ul>
+        <span class="tag">DYNAMIC QR</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEM CHỐNG GIẢ VISUAL ============ -->
+<section style="background:var(--paper);">
+  <div class="container alert-inner">
+    <img src="assets/tem-chong-gia.jpg" alt="Tem chống hàng giả NBC GS1">
+    <div class="alert-copy">
+      <div class="kicker" style="color:var(--gs1-green);">GIẢI PHÁP NÂNG CAO UY TÍN THƯƠNG HIỆU</div>
+      <h2>Tem chống giả — bảo vệ từng sản phẩm</h2>
+      <p style="color:var(--ink-soft); font-size:15px; margin-bottom:18px;">Mỗi tem mang mã QR định danh riêng, được cấp bởi Trung tâm TEM &amp; VLCG (Bộ Công an - IBĐ), giúp người tiêu dùng xác thực sản phẩm chỉ trong vài giây.</p>
+      <ul class="alert-list">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1E8449"/><path d="M8 12l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Bảo mật tuyệt đối, chống làm giả</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1E8449"/><path d="M8 12l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Ngăn chặn hàng giả, hàng nhái</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#1E8449"/><path d="M8 12l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Phát triển thị trường bền vững</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ E-LABEL LIVE DEMO ============ -->
+<section class="demo" id="demo">
+  <div class="container demo-grid">
+    <div class="demo-qr">
+      <img src="assets/qr-elabel.png" alt="Mã QR trải nghiệm nhãn điện tử">
+      <div class="cap mono">QUÉT ĐỂ TRẢI NGHIỆM THỬ</div>
+    </div>
+    <div class="demo-copy">
+      <div class="kicker" style="color:#4CD97B; font-weight:800; font-size:13px; letter-spacing:0.08em; margin-bottom:10px;">TRẢI NGHIỆM THỰC TẾ</div>
+      <h2>Xem Nhãn điện tử hoạt động như thế nào</h2>
+      <p>Quét mã QR bên cạnh hoặc bấm vào nút dưới đây để trải nghiệm trực tiếp một Nhãn điện tử mẫu — đúng như những gì khách hàng của bạn sẽ thấy trên sản phẩm.</p>
+      <a href="https://sinparknoahihi.github.io/Dasani-CocaCola/" target="_blank" rel="noopener" class="btn demo-link">
+        Bấm vào đây để trải nghiệm
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <div class="demo-url mono">sinparknoahihi.github.io/Dasani-CocaCola/</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEAD FORM ============ -->
+<section class="form-section" id="form">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">ĐĂNG KÝ TƯ VẤN</div>
+      <h2>Cho chúng tôi biết nhu cầu của bạn</h2>
+    </div>
+
+    <div class="form-wrap">
+      <form id="leadForm">
+        <div class="field-row">
+          <div>
+            <label>Tên Doanh nghiệp / Tổ chức <span class="req">*</span></label>
+            <input type="text" id="companyName" required placeholder="VD: Công ty TNHH ABC">
+          </div>
+          <div>
+            <label>Số điện thoại (có Zalo) <span class="req">*</span></label>
+            <input type="tel" id="phone" required placeholder="VD: 09xx xxx xxx">
+          </div>
+        </div>
+        <div class="field-full">
+          <label>Email liên hệ</label>
+          <input type="email" id="email" placeholder="VD: [email protected]">
+        </div>
+
+        <div class="field-full">
+          <label style="margin-bottom:14px;">Danh mục cần tư vấn <span style="font-weight:500; color:var(--ink-soft);">(chọn một hoặc nhiều)</span></label>
+
+          <!-- Truy xuất nguồn gốc -->
+          <div class="need-group" data-group>
+            <div class="need-head" data-toggle>
+              <input type="checkbox" data-need="txng">
+              <span class="stamp-mini"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#1E8449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="need-title">Truy xuất nguồn gốc</span>
+              <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#5A6B85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="need-body">
+              <div class="need-body-inner">
+                <div>
+                  <label>Số lượng đầu sản phẩm dự kiến</label>
+                  <select id="txngQty">
+                    <option value="">— Chọn —</option>
+                    <option>1–5</option><option>5–10</option><option>&gt;10</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Yêu cầu về quy trình sản xuất / chuỗi cung ứng?</label>
+                  <div class="radio-row">
+                    <label class="chip"><input type="radio" name="txngProcess" value="Có"> Có</label>
+                    <label class="chip"><input type="radio" name="txngProcess" value="Không"> Không</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nhãn điện tử -->
+          <div class="need-group" data-group>
+            <div class="need-head" data-toggle>
+              <input type="checkbox" data-need="elabel">
+              <span class="stamp-mini"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="5" width="14" height="14" rx="2.5" stroke="#1E8449" stroke-width="2"/></svg></span>
+              <span class="need-title">Nhãn điện tử (E-label)</span>
+              <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#5A6B85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="need-body">
+              <div class="need-body-inner">
+                <div>
+                  <label>Số lượng đầu sản phẩm dự kiến</label>
+                  <select id="elabelQty">
+                    <option value="">— Chọn —</option>
+                    <option>1–5</option><option>5–10</option><option>&gt;10</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Yêu cầu thông tin hiển thị chính</label>
+                  <div class="radio-row">
+                    <label class="chip"><input type="checkbox" name="elabelInfo" value="Thành phần"> Thành phần</label>
+                    <label class="chip"><input type="checkbox" name="elabelInfo" value="HDSD"> HDSD</label>
+                    <label class="chip"><input type="checkbox" name="elabelInfo" value="Tiêu chuẩn"> Tiêu chuẩn</label>
+                    <label class="chip"><input type="checkbox" name="elabelInfo" value="Chứng nhận"> Chứng nhận</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tem chống giả -->
+          <div class="need-group" data-group>
+            <div class="need-head" data-toggle>
+              <input type="checkbox" data-need="temgia">
+              <span class="stamp-mini"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke="#1E8449" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="#1E8449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              <span class="need-title">Tem chống giả</span>
+              <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#5A6B85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="need-body">
+              <div class="need-body-inner">
+                <div>
+                  <label>Số lượng đầu sản phẩm / số lượng tem dự kiến phát hành</label>
+                  <input type="text" id="temgiaQty" placeholder="VD: 5.000 tem / tháng">
+                </div>
+                <div>
+                  <label>Loại hình xác thực mong muốn</label>
+                  <div class="radio-row">
+                    <label class="chip"><input type="radio" name="temgiaType" value="QR SMS"> QR SMS</label>
+                    <label class="chip"><input type="radio" name="temgiaType" value="QR ma trận"> QR ma trận</label>
+                    <label class="chip"><input type="radio" name="temgiaType" value="Tem điện tử"> Tem điện tử</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-full">
+          <label>Ghi chú thêm</label>
+          <textarea id="note" placeholder="Yêu cầu chi tiết khác (nếu có)..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-submit" id="submitBtn">GỬI YÊU CẦU TƯ VẤN</button>
+          <a href="#" class="btn btn-zalo" id="zaloFormBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.86 1.5 5.41 3.84 7.08-.13 1.02-.5 2.28-1.34 3.42 0 0 2.3-.36 4.3-1.85.98.26 2.03.4 3.2.4 5.52 0 10-4.03 10-9C22 6.03 17.52 2 12 2Z" fill="white"/></svg>
+            Làm việc qua Zalo tư vấn
+          </a>
+        </div>
+        <p class="form-note">Bằng việc gửi form, bạn đồng ý để NBC/GS1 Vietnam liên hệ tư vấn theo thông tin đã cung cấp.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Success Modal -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <div class="stamp" style="margin:0 auto 18px;"><svg viewBox="0 0 24 24" fill="none" width="28" height="28"><path d="M5 12l5 5 9-10" stroke="#1E8449" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h3>Đã gửi yêu cầu thành công!</h3>
+    <p>Cảm ơn Quý doanh nghiệp đã quan tâm. Đội ngũ NBC/GS1 Vietnam sẽ liên hệ tư vấn trong thời gian sớm nhất.</p>
+    <button class="btn btn-primary" id="closeModal" style="width:100%; justify-content:center;">Đóng</button>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logos">
+        <img src="assets/logo-nbc.png" alt="NBC" class="logo-nbc">
+        <span class="logo-divider"></span>
+        <img src="assets/logo-gs1.png" alt="GS1 Vietnam" class="logo-gs1">
+      </div>
+      <span style="font-size:13.5px; font-weight:600;">Trung tâm Mã số, Mã vạch Quốc gia</span>
+    </div>
+    <div class="socials">
+      <a href="#" id="fbLink" aria-label="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13.5 22v-8.5H16l.5-3.5h-3V7.7c0-1 .3-1.7 1.8-1.7H16.5V2.9C16 2.8 15 2.7 13.9 2.7c-2.3 0-3.9 1.4-3.9 4v2.3H7.5V13H10v9h3.5Z" fill="#C9D5EA"/></svg>
+      </a>
+      <a href="#" id="zaloOaLink" aria-label="Zalo OA">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.86 1.5 5.41 3.84 7.08-.13 1.02-.5 2.28-1.34 3.42 0 0 2.3-.36 4.3-1.85.98.26 2.03.4 3.2.4 5.52 0 10-4.03 10-9C22 6.03 17.52 2 12 2Z" fill="#C9D5EA"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Trung tâm Mã số, Mã vạch Quốc gia — NBC / GS1 Vietnam. Mọi thông tin được bảo mật theo quy định.</div>
+</footer>
+
+<script>
+  // ---- Config: cập nhật các giá trị này theo thông tin thật ----
+  const CONFIG = {
+    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec",
+    ZALO_OA_URL: "https://zalo.me/YOUR_ZALO_OA_ID",
+    FACEBOOK_URL: "https://facebook.com/YOUR_FANPAGE"
+  };
+  document.getElementById('zaloHeroBtn').href = CONFIG.ZALO_OA_URL;
+  document.getElementById('zaloFormBtn').href = CONFIG.ZALO_OA_URL;
+  document.getElementById('zaloOaLink').href = CONFIG.ZALO_OA_URL;
+  document.getElementById('fbLink').href = CONFIG.FACEBOOK_URL;
+
+  // ---- Accordion ----
+  document.querySelectorAll('[data-toggle]').forEach(head => {
+    head.addEventListener('click', (e) => {
+      if (e.target.matches('input[type=checkbox]')) return;
+      head.closest('.need-group').classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('[data-need]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const group = cb.closest('.need-group');
+      group.classList.toggle('open', cb.checked);
+    });
+  });
+
+  // ---- Form submit ----
+  const form = document.getElementById('leadForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const companyName = document.getElementById('companyName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    if (!companyName || !phone) {
+      alert('Vui lòng nhập đầy đủ Tên Doanh nghiệp và Số điện thoại.');
+      return;
+    }
+
+    const elabelInfo = Array.from(document.querySelectorAll('input[name=elabelInfo]:checked')).map(i => i.value);
+
+    const payload = {
+      timestamp: new Date().toISOString(),
+      companyName,
+      phone,
+      email: document.getElementById('email').value.trim(),
+      needTruyXuatNguonGoc: document.querySelector('[data-need=txng]').checked,
+      txngQty: document.getElementById('txngQty').value,
+      txngProcess: (document.querySelector('input[name=txngProcess]:checked') || {}).value || '',
+      needElabel: document.querySelector('[data-need=elabel]').checked,
+      elabelQty: document.getElementById('elabelQty').value,
+      elabelInfo: elabelInfo.join(', '),
+      needTemChongGia: document.querySelector('[data-need=temgia]').checked,
+      temgiaQty: document.getElementById('temgiaQty').value,
+      temgiaType: (document.querySelector('input[name=temgiaType]:checked') || {}).value || '',
+      note: document.getElementById('note').value.trim()
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'ĐANG GỬI...';
+
+    try {
+      await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      document.getElementById('successModal').classList.add('show');
+      form.reset();
+      document.querySelectorAll('.need-group.open').forEach(g => g.classList.remove('open'));
+    } catch (err) {
+      alert('Có lỗi xảy ra, vui lòng thử lại hoặc liên hệ trực tiếp qua Zalo.');
+      console.error(err);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'GỬI YÊU CẦU TƯ VẤN';
+    }
+  });
+
+  document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('successModal').classList.remove('show');
+  });
+</script>
+</body>
+</html>
