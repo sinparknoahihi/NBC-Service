@@ -470,7 +470,7 @@
             <div class="need-head" data-toggle>
               <input type="checkbox" data-need="txng">
               <span class="stamp-mini"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#1E8449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="need-title">Truy xuất nguồn gốc</span>
+              <span class="need-title">Tru xuất nguồn gốc</span>
               <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#5A6B85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="need-body">
@@ -604,8 +604,8 @@
 <script>
   // ---- Config: URL Google Apps Script chính thức của bạn ----
   const CONFIG = {
-    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwEY1eBHLJitDYDqjFME_B3AXX9KS-VRhDtysChHkSnqRZfhxanq79ft57Lcv3kRozH/exec",
-    ZALO_OA_URL: "https://zalo.me/0988888888", // Sửa lại SĐT ở đây
+    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw2QbgXB45JBJKjF4hXggbt2sYFWmJO0nc4rOP_KTpAgKWDwPnv2tG17iMrKXb-g7Y2/exec",
+    ZALO_OA_URL: "https://zalo.me/0988888888", // Sửa lại SĐT ở đây nếu cần
     FACEBOOK_URL: "https://facebook.com/nbc.gov.vn"
   };
   document.getElementById('zaloHeroBtn').href = CONFIG.ZALO_OA_URL;
@@ -620,6 +620,7 @@
       head.closest('.need-group').classList.toggle('open');
     });
   });
+  
   document.querySelectorAll('[data-need]').forEach(cb => {
     cb.addEventListener('change', () => {
       const group = cb.closest('.need-group');
@@ -627,11 +628,11 @@
     });
   });
 
-  // ---- Form submit ----
-  const form = document.getElementById('leadForm');
-  const submitBtn = document.getElementById('submitBtn');
+  // ---- Form submit (ĐÃ SỬA LỖI LẶP BIẾN) ----
+  const formEl = document.getElementById('leadForm');
+  const submitBtnEl = document.getElementById('submitBtn');
 
-  form.addEventListener('submit', function(e) {
+  formEl.addEventListener('submit', function(e) {
     e.preventDefault();
 
     const companyName = document.getElementById('companyName').value.trim();
@@ -680,10 +681,10 @@
       note: document.getElementById('note').value.trim()
     };
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'ĐANG GỬI...';
+    submitBtnEl.disabled = true;
+    submitBtnEl.textContent = 'ĐANG GỬI...';
 
-    // Gửi dạng no-cors và bật Modal, thêm thiết lập 'text/plain;charset=utf-8' để tương thích Apps Script
+    // Gửi dạng no-cors và bật Modal, thêm thiết lập 'text/plain' để trình duyệt không chặn
     fetch(CONFIG.GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
@@ -692,7 +693,7 @@
     })
     .then(() => {
       document.getElementById('successModal').classList.add('show');
-      form.reset();
+      formEl.reset();
       document.querySelectorAll('.need-group.open').forEach(g => g.classList.remove('open'));
     })
     .catch(err => {
@@ -700,8 +701,8 @@
       console.error(err);
     })
     .finally(() => {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'GỬI YÊU CẦU TƯ VẤN';
+      submitBtnEl.disabled = false;
+      submitBtnEl.textContent = 'GỬI YÊU CẦU TƯ VẤN';
     });
   });
 
