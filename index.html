@@ -604,7 +604,7 @@
 <script>
   // ---- Config: URL Google Apps Script chính thức của bạn ----
   const CONFIG = {
-    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxLIclWbu4T8PPAc87ok2z-TjhzMNO-nJoP03JKkA9MJcq6UnujQUxQ4GxNXlHHEzMX/exec",
+    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwWk96mVl8yVvTp88zChZcE0Y1cNet71pUk3nNURrA56lEI6x6AdE1NUfiyoI-dqOJR/exec",
     ZALO_OA_URL: "https://zalo.me/0988888888", // Sửa lại SĐT ở đây
     FACEBOOK_URL: "https://facebook.com/nbc.gov.vn"
   };
@@ -631,6 +631,10 @@
   const form = document.getElementById('leadForm');
   const submitBtn = document.getElementById('submitBtn');
 
+// ---- Form submit ----
+  const form = document.getElementById('leadForm');
+  const submitBtn = document.getElementById('submitBtn');
+
   form.addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -642,56 +646,48 @@
       return;
     }
 
-    const selectedServices = [];
-    const detailsList = [];
+    // Bóc tách chi tiết từng dịch vụ để khớp với 14 cột trên Google Sheet
+    const txngChecked = document.querySelector('[data-need="txng"]').checked;
+    const processEl = document.querySelector('input[name="txngProcess"]:checked');
+    const txngProcess = processEl ? processEl.value : "";
 
-    // Lấy thông tin TXNG
-    const chkTxng = document.querySelector('[data-need="txng"]');
-    if (chkTxng && chkTxng.checked) {
-      selectedServices.push("Truy xuất nguồn gốc");
-      const qty = document.getElementById('txngQty').value || "Chưa chọn SL";
-      const processEl = document.querySelector('input[name="txngProcess"]:checked');
-      const process = processEl ? processEl.value : "Chưa chọn quy trình";
-      detailsList.push(`[TXNG: SL ${qty}, Quy trình: ${process}]`);
-    }
+    const elabelChecked = document.querySelector('[data-need="elabel"]').checked;
+    const elabelInfo = Array.from(document.querySelectorAll('input[name="elabelInfo"]:checked')).map(i => i.value).join(', ');
 
-    // Lấy thông tin Elabel
-    const chkElabel = document.querySelector('[data-need="elabel"]');
-    if (chkElabel && chkElabel.checked) {
-      selectedServices.push("Nhãn điện tử");
-      const qty = document.getElementById('elabelQty').value || "Chưa chọn SL";
-      const info = Array.from(document.querySelectorAll('input[name="elabelInfo"]:checked')).map(i => i.value).join(', ') || "Chưa chọn thông tin";
-      detailsList.push(`[Nhãn điện tử: SL ${qty}, Hiển thị: ${info}]`);
-    }
+    const temgiaChecked = document.querySelector('[data-need="temgia"]').checked;
+    const typeEl = document.querySelector('input[name="temgiaType"]:checked');
+    const temgiaType = typeEl ? typeEl.value : "";
 
-    // Lấy thông tin Tem gia
-    const chkTemgia = document.querySelector('[data-need="temgia"]');
-    if (chkTemgia && chkTemgia.checked) {
-      selectedServices.push("Tem chống giả");
-      const qty = document.getElementById('temgiaQty').value.trim() || "Chưa nhập SL";
-      const typeEl = document.querySelector('input[name="temgiaType"]:checked');
-      const type = typeEl ? typeEl.value : "Chưa chọn loại hình";
-      detailsList.push(`[Tem chống giả: SL ${qty}, Loại hình: ${type}]`);
-    }
-
-    if (selectedServices.length === 0) {
+    if (!txngChecked && !elabelChecked && !temgiaChecked) {
       alert('Vui lòng tích chọn ít nhất 1 dịch vụ bạn cần tư vấn!');
       return;
     }
 
+    // Tạo payload chuẩn xác 100% khớp với Code.gs
     const payload = {
       companyName: companyName,
       phone: phone,
       email: document.getElementById('email').value.trim(),
-      services: selectedServices.join(', '),
-      details: detailsList.join(' | '),
+      
+      needTruyXuatNguonGoc: txngChecked ? "Có" : "",
+      txngQty: txngChecked ? document.getElementById('txngQty').value : "",
+      txngProcess: txngChecked ? txngProcess : "",
+      
+      needElabel: elabelChecked ? "Có" : "",
+      elabelQty: elabelChecked ? document.getElementById('elabelQty').value : "",
+      elabelInfo: elabelChecked ? elabelInfo : "",
+      
+      needTemChongGia: temgiaChecked ? "Có" : "",
+      temgiaQty: temgiaChecked ? document.getElementById('temgiaQty').value.trim() : "",
+      temgiaType: temgiaChecked ? temgiaType : "",
+      
       note: document.getElementById('note').value.trim()
     };
 
     submitBtn.disabled = true;
     submitBtn.textContent = 'ĐANG GỬI...';
 
-    // Xử lý fetch dạng no-cors và bật Modal ngay khi promise resolve
+    // Gửi dạng no-cors và bật Modal
     fetch(CONFIG.GOOGLE_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
@@ -699,7 +695,6 @@
       body: JSON.stringify(payload)
     })
     .then(() => {
-      // Khi gửi dạng no-cors, nếu không có lỗi mạng thì form đã đi tới đích thành công
       document.getElementById('successModal').classList.add('show');
       form.reset();
       document.querySelectorAll('.need-group.open').forEach(g => g.classList.remove('open'));
