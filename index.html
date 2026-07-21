@@ -452,7 +452,7 @@
         Bấm vào đây để trải nghiệm
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <div class="demo-url mono">KẾT NỐI VÀ ĐỒNG BỘ VỚI HỆ THỐNG NHÃN ĐIỆN TỬ QUỐC GIA</div>
+      <div class="demo-url mono">sinparknoahihi.github.io/Dasani-CocaCola/</div>
     </div>
   </div>
 </section>
@@ -602,7 +602,7 @@
 <script>
   // ---- Config: cập nhật các giá trị này theo thông tin thật ----
   const CONFIG = {
-    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby9URziJAABjIyxPC6sxSIC6WNQjkGbMdc6OoNmmctbSOE_OfaVwqbQhQ5S-CQW7VaX/exec",
+    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzZhG9CnlgDYNf3kxGiBO71bFaS3TbMkEyPOfFiqJo2z0CX6Tdym1HLN-NKs38iccHN/exec",
     ZALO_OA_URL: "https://zalo.me/0393939488",
     FACEBOOK_URL: "https://facebook.com/msmvquocgia"
   };
@@ -662,7 +662,7 @@
       await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       });
       document.getElementById('successModal').classList.add('show');
