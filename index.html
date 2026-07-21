@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NBC/GS1 Vietnam — Giải pháp Truy xuất nguồn gốc, Tem chống giả & Nhãn điện tử</title>
+<meta name="description" content="NBC/GS1 Vietnam đồng hành cùng doanh nghiệp triển khai Truy xuất nguồn gốc, Tem chống giả và Nhãn điện tử — đúng chuẩn quốc gia theo Nghị định 37/2026/NĐ-CP, sẵn sàng cho xuất khẩu.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="NBC/GS1 Vietnam — Truy xuất nguồn gốc, Tem chống giả & Nhãn điện tử">
+<meta property="og:description" content="Giải pháp minh bạch sản phẩm & chuyển đổi số cho doanh nghiệp, đúng chuẩn Nghị định 37/2026/NĐ-CP.">
+<meta property="og:image" content="assets/truy-xuat-nguon-goc.jpg">
+<link rel="icon" href="assets/logo-header.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -53,9 +59,7 @@
   .brand{ display:flex; align-items:center; gap:14px; }
   .brand-logos{ display:flex; align-items:center; gap:12px; }
   .brand-logos img{ display:block; }
-  .logo-nbc{ height:30px; width:auto; }
-  .logo-gs1{ height:38px; width:auto; }
-  .logo-divider{ width:1px; height:26px; background:var(--line); }
+  .logo-header{ height:34px; width:auto; }
   .brand-text{ font-size:13px; color:var(--ink-soft); font-weight:600; line-height:1.3; }
   .brand-text strong{ display:block; color:var(--navy); font-size:15px; font-weight:800; }
   .btn{
@@ -220,13 +224,8 @@
   }
   .need-group.open .need-body{ max-height:400px; }
   .need-body-inner{ padding:18px; display:grid; gap:16px; }
-  .radio-row{ display:flex; gap:10px; flex-wrap:wrap; }
-  .chip{
-    font-size:13px; padding:8px 14px; border-radius:999px; border:1.5px solid var(--line);
-    cursor:pointer; background:#fff; font-weight:600; color:var(--ink-soft);
-  }
-  .chip input{ display:none; }
-  .chip:has(input:checked){ background:var(--gs1-green); border-color:var(--gs1-green); color:#fff; }
+  .field-hint{ font-size:13px; font-weight:600; color:var(--ink-soft); opacity:0.8; margin-bottom:7px; }
+  .field-hint-ex{ font-weight:500; }
 
   .form-actions{ display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; align-items:center; }
   .btn-submit{
@@ -255,9 +254,7 @@
   .footer-brand{ display:flex; align-items:center; gap:14px; }
   .footer-logos{ display:flex; align-items:center; gap:12px; background:#fff; border-radius:10px; padding:8px 14px; }
   .footer-logos img{ display:block; }
-  .footer-logos .logo-nbc{ height:24px; }
-  .footer-logos .logo-gs1{ height:30px; }
-  .footer-logos .logo-divider{ height:20px; background:var(--line); }
+  .footer-logos .logo-header{ height:26px; }
   .socials{ display:flex; gap:12px; }
   .socials a{
     width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.08);
@@ -278,9 +275,7 @@
   <div class="header-inner">
     <div class="brand">
       <div class="brand-logos">
-        <img src="assets/logo-nbc.png" alt="NBC" class="logo-nbc">
-        <span class="logo-divider"></span>
-        <img src="assets/logo-gs1.png" alt="GS1 Vietnam" class="logo-gs1">
+        <img src="assets/logo-header.jpg" alt="NBC / GS1 Vietnam" class="logo-header">
       </div>
       <span class="brand-text"><strong>Trung tâm Mã số Mã vạch Quốc gia</strong>Dịch vụ gia tăng NBC · GS1 Vietnam</span>
     </div>
@@ -337,7 +332,24 @@
     <div class="cards">
       <div class="card">
         <div class="card-visual">
-          <img src="assets/card-txng.jpg" alt="Quét mã QR truy xuất nguồn gốc sản phẩm" style="width:100%; height:100%; object-fit:cover;">
+          <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice">
+            <defs><pattern id="gridTXNG" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0H0V18" fill="none" stroke="rgba(255,255,255,0.08)"/></pattern></defs>
+            <rect width="400" height="132" fill="url(#gridTXNG)"/>
+            <g transform="translate(171,16)">
+              <rect x="0" y="0" width="58" height="58" rx="6" fill="none" stroke="#4CD97B" stroke-width="2.2" vector-effect="non-scaling-stroke"/>
+              <rect x="9" y="9" width="16" height="16" rx="2" fill="none" stroke="#4CD97B" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              <rect x="33" y="9" width="16" height="16" rx="2" fill="none" stroke="#4CD97B" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              <rect x="9" y="33" width="16" height="16" rx="2" fill="none" stroke="#4CD97B" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              <rect x="14" y="14" width="6" height="6" fill="#4CD97B"/>
+              <rect x="38" y="14" width="6" height="6" fill="#4CD97B" opacity="0.7"/>
+              <rect x="14" y="38" width="6" height="6" fill="#4CD97B" opacity="0.7"/>
+              <rect x="33" y="33" width="7" height="7" fill="#4CD97B" opacity="0.6"/>
+              <rect x="42" y="33" width="7" height="7" fill="#4CD97B" opacity="0.4"/>
+              <rect x="33" y="42" width="7" height="7" fill="#4CD97B" opacity="0.4"/>
+              <rect x="42" y="42" width="7" height="7" fill="#4CD97B" opacity="0.8"/>
+            </g>
+            <text x="200" y="118" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="monospace" letter-spacing="2">QUÉT QR · XÁC THỰC NGUỒN GỐC</text>
+          </svg>
         </div>
         <div class="card-body">
         <div class="stamp"><svg viewBox="0 0 24 24" fill="none"><path d="M3 7l9-4 9 4v6c0 5-3.8 8.5-9 10-5.2-1.5-9-5-9-10V7Z" stroke="#1E8449" stroke-width="1.8"/><path d="M9 12l2 2 4-4" stroke="#1E8449" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -353,7 +365,15 @@
       </div>
       <div class="card">
         <div class="card-visual">
-          <img src="assets/card-temgia.jpg" alt="Tem chống hàng giả NBC GS1 với mã QR xác thực" style="width:100%; height:100%; object-fit:cover;">
+          <svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice">
+            <defs><pattern id="gridTEM" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M18 0H0V18" fill="none" stroke="rgba(255,255,255,0.08)"/></pattern></defs>
+            <rect width="400" height="132" fill="url(#gridTEM)"/>
+            <g transform="translate(166,11) scale(2.8)" stroke="#4CD97B" fill="none" vector-effect="non-scaling-stroke">
+              <path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4Z" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
+              <circle cx="12" cy="11" r="2.6" stroke-width="1.8" vector-effect="non-scaling-stroke"/>
+            </g>
+            <text x="200" y="118" text-anchor="middle" fill="rgba(255,255,255,0.55)" font-size="10" font-family="monospace" letter-spacing="2">CẤP BỞI BỘ CÔNG AN · IBĐ</text>
+          </svg>
         </div>
         <div class="card-body">
         <div class="stamp"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4Z" stroke="#1E8449" stroke-width="1.8"/><circle cx="12" cy="11" r="2.6" stroke="#1E8449" stroke-width="1.8"/></svg></div>
@@ -449,17 +469,17 @@
       <form id="leadForm">
         <div class="field-row">
           <div>
-            <label>Tên Doanh nghiệp / Tổ chức <span class="req">*</span></label>
+            <label for="companyName">Tên Doanh nghiệp / Tổ chức <span class="req">*</span></label>
             <input type="text" id="companyName" required placeholder="VD: Công ty TNHH ABC">
           </div>
           <div>
-            <label>Số điện thoại (có Zalo) <span class="req">*</span></label>
+            <label for="phone">Số điện thoại (có Zalo) <span class="req">*</span></label>
             <input type="tel" id="phone" required placeholder="VD: 09xx xxx xxx">
           </div>
         </div>
         <div class="field-full">
-          <label>Email liên hệ</label>
-          <input type="email" id="email" placeholder="VD: contact@doanhnghiep.com">
+          <label for="email">Email liên hệ</label>
+          <input type="email" id="email" placeholder="Email liên hệ của Quý doanh nghiệp">
         </div>
 
         <div class="field-full">
@@ -470,24 +490,21 @@
             <div class="need-head" data-toggle>
               <input type="checkbox" data-need="txng">
               <span class="stamp-mini"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="#1E8449" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-              <span class="need-title">Tru xuất nguồn gốc</span>
+              <span class="need-title">Truy xuất nguồn gốc</span>
               <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="#5A6B85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div class="need-body">
               <div class="need-body-inner">
                 <div>
-                  <label>Số lượng đầu sản phẩm dự kiến</label>
+                  <label for="txngQty">Số lượng đầu sản phẩm dự kiến</label>
                   <select id="txngQty">
                     <option value="">— Chọn —</option>
                     <option>1–5</option><option>5–10</option><option>&gt;10</option>
                   </select>
                 </div>
                 <div>
-                  <label>Yêu cầu về quy trình sản xuất / chuỗi cung ứng?</label>
-                  <div class="radio-row">
-                    <label class="chip"><input type="radio" name="txngProcess" value="Có"> Có</label>
-                    <label class="chip"><input type="radio" name="txngProcess" value="Không"> Không</label>
-                  </div>
+                  <label for="txngNote" class="field-hint">Truy xuất cho danh mục sản phẩm gì? <span class="field-hint-ex">(Gạo, rượu, thịt bò khô,...)</span></label>
+                  <textarea id="txngNote" placeholder="Doanh nghiệp ghi chú danh mục / quy cách sản phẩm cần truy xuất..."></textarea>
                 </div>
               </div>
             </div>
@@ -504,20 +521,11 @@
             <div class="need-body">
               <div class="need-body-inner">
                 <div>
-                  <label>Số lượng đầu sản phẩm dự kiến</label>
+                  <label for="elabelQty">Số lượng đầu sản phẩm dự kiến</label>
                   <select id="elabelQty">
                     <option value="">— Chọn —</option>
                     <option>1–5</option><option>5–10</option><option>&gt;10</option>
                   </select>
-                </div>
-                <div>
-                  <label>Yêu cầu thông tin hiển thị chính</label>
-                  <div class="radio-row">
-                    <label class="chip"><input type="checkbox" name="elabelInfo" value="Thành phần"> Thành phần</label>
-                    <label class="chip"><input type="checkbox" name="elabelInfo" value="HDSD"> HDSD</label>
-                    <label class="chip"><input type="checkbox" name="elabelInfo" value="Tiêu chuẩn"> Tiêu chuẩn</label>
-                    <label class="chip"><input type="checkbox" name="elabelInfo" value="Chứng nhận"> Chứng nhận</label>
-                  </div>
                 </div>
               </div>
             </div>
@@ -534,16 +542,8 @@
             <div class="need-body">
               <div class="need-body-inner">
                 <div>
-                  <label>Số lượng đầu sản phẩm / số lượng tem dự kiến phát hành</label>
+                  <label for="temgiaQty">Số lượng đầu sản phẩm / số lượng tem dự kiến phát hành</label>
                   <input type="text" id="temgiaQty" placeholder="VD: 5.000 tem / tháng">
-                </div>
-                <div>
-                  <label>Loại hình xác thực mong muốn</label>
-                  <div class="radio-row">
-                    <label class="chip"><input type="radio" name="temgiaType" value="QR SMS"> QR SMS</label>
-                    <label class="chip"><input type="radio" name="temgiaType" value="QR ma trận"> QR ma trận</label>
-                    <label class="chip"><input type="radio" name="temgiaType" value="Tem điện tử"> Tem điện tử</label>
-                  </div>
                 </div>
               </div>
             </div>
@@ -551,7 +551,7 @@
         </div>
 
         <div class="field-full">
-          <label>Ghi chú thêm</label>
+          <label for="note">Ghi chú thêm</label>
           <textarea id="note" placeholder="Yêu cầu chi tiết khác (nếu có)..."></textarea>
         </div>
 
@@ -583,9 +583,7 @@
   <div class="container footer-grid">
     <div class="footer-brand">
       <div class="footer-logos">
-        <img src="assets/logo-nbc.png" alt="NBC" class="logo-nbc">
-        <span class="logo-divider"></span>
-        <img src="assets/logo-gs1.png" alt="GS1 Vietnam" class="logo-gs1">
+        <img src="assets/logo-header.jpg" alt="NBC / GS1 Vietnam" class="logo-header">
       </div>
       <span style="font-size:13.5px; font-weight:600;">Trung tâm Mã số, Mã vạch Quốc gia</span>
     </div>
@@ -602,11 +600,11 @@
 </footer>
 
 <script>
-  // ---- Config: URL Google Apps Script chính thức của bạn ----
+  // ---- Config: cập nhật các giá trị này theo thông tin thật ----
   const CONFIG = {
-    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw2QbgXB45JBJKjF4hXggbt2sYFWmJO0nc4rOP_KTpAgKWDwPnv2tG17iMrKXb-g7Y2/exec",
-    ZALO_OA_URL: "https://zalo.me/0988888888", // Sửa lại SĐT ở đây nếu cần
-    FACEBOOK_URL: "https://facebook.com/nbc.gov.vn"
+    GOOGLE_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxvqsvS4yMPfWLj-NPeR9f4KEnn7Q54HlVybAZm77Frs5_cGn6nt54lAHR6JeSIvCVn/exec",
+    ZALO_OA_URL: "https://zalo.me/0393939488",
+    FACEBOOK_URL: "https://facebook.com/msmvquocgia"
   };
   document.getElementById('zaloHeroBtn').href = CONFIG.ZALO_OA_URL;
   document.getElementById('zaloFormBtn').href = CONFIG.ZALO_OA_URL;
@@ -620,7 +618,6 @@
       head.closest('.need-group').classList.toggle('open');
     });
   });
-  
   document.querySelectorAll('[data-need]').forEach(cb => {
     cb.addEventListener('change', () => {
       const group = cb.closest('.need-group');
@@ -628,11 +625,11 @@
     });
   });
 
-  // ---- Form submit (ĐÃ SỬA LỖI LẶP BIẾN) ----
-  const formEl = document.getElementById('leadForm');
-  const submitBtnEl = document.getElementById('submitBtn');
+  // ---- Form submit ----
+  const form = document.getElementById('leadForm');
+  const submitBtn = document.getElementById('submitBtn');
 
-  formEl.addEventListener('submit', function(e) {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const companyName = document.getElementById('companyName').value.trim();
@@ -643,70 +640,43 @@
       return;
     }
 
-    // Bóc tách chi tiết từng dịch vụ để khớp với 14 cột trên Google Sheet
-    const txngChecked = document.querySelector('[data-need="txng"]').checked;
-    const processEl = document.querySelector('input[name="txngProcess"]:checked');
-    const txngProcess = processEl ? processEl.value : "";
-
-    const elabelChecked = document.querySelector('[data-need="elabel"]').checked;
-    const elabelInfo = Array.from(document.querySelectorAll('input[name="elabelInfo"]:checked')).map(i => i.value).join(', ');
-
-    const temgiaChecked = document.querySelector('[data-need="temgia"]').checked;
-    const typeEl = document.querySelector('input[name="temgiaType"]:checked');
-    const temgiaType = typeEl ? typeEl.value : "";
-
-    if (!txngChecked && !elabelChecked && !temgiaChecked) {
-      alert('Vui lòng tích chọn ít nhất 1 dịch vụ bạn cần tư vấn!');
-      return;
-    }
-
-    // Tạo payload chuẩn xác 100% khớp với Code.gs
     const payload = {
-      companyName: companyName,
-      phone: phone,
+      timestamp: new Date().toISOString(),
+      companyName,
+      phone,
       email: document.getElementById('email').value.trim(),
-      
-      needTruyXuatNguonGoc: txngChecked ? "Có" : "",
-      txngQty: txngChecked ? document.getElementById('txngQty').value : "",
-      txngProcess: txngChecked ? txngProcess : "",
-      
-      needElabel: elabelChecked ? "Có" : "",
-      elabelQty: elabelChecked ? document.getElementById('elabelQty').value : "",
-      elabelInfo: elabelChecked ? elabelInfo : "",
-      
-      needTemChongGia: temgiaChecked ? "Có" : "",
-      temgiaQty: temgiaChecked ? document.getElementById('temgiaQty').value.trim() : "",
-      temgiaType: temgiaChecked ? temgiaType : "",
-      
+      needTruyXuatNguonGoc: document.querySelector('[data-need=txng]').checked,
+      txngQty: document.getElementById('txngQty').value,
+      txngNote: document.getElementById('txngNote').value.trim(),
+      needElabel: document.querySelector('[data-need=elabel]').checked,
+      elabelQty: document.getElementById('elabelQty').value,
+      needTemChongGia: document.querySelector('[data-need=temgia]').checked,
+      temgiaQty: document.getElementById('temgiaQty').value,
       note: document.getElementById('note').value.trim()
     };
 
-    submitBtnEl.disabled = true;
-    submitBtnEl.textContent = 'ĐANG GỬI...';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'ĐANG GỬI...';
 
-    // Gửi dạng no-cors và bật Modal, thêm thiết lập 'text/plain' để trình duyệt không chặn
-    fetch(CONFIG.GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    })
-    .then(() => {
+    try {
+      await fetch(CONFIG.GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
       document.getElementById('successModal').classList.add('show');
-      formEl.reset();
+      form.reset();
       document.querySelectorAll('.need-group.open').forEach(g => g.classList.remove('open'));
-    })
-    .catch(err => {
-      alert('Có lỗi mạng xảy ra khi gửi. Vui lòng thử lại hoặc liên hệ Zalo trực tiếp!');
+    } catch (err) {
+      alert('Có lỗi xảy ra, vui lòng thử lại hoặc liên hệ trực tiếp qua Zalo.');
       console.error(err);
-    })
-    .finally(() => {
-      submitBtnEl.disabled = false;
-      submitBtnEl.textContent = 'GỬI YÊU CẦU TƯ VẤN';
-    });
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'GỬI YÊU CẦU TƯ VẤN';
+    }
   });
 
-  // Sự kiện đóng Modal
   document.getElementById('closeModal').addEventListener('click', () => {
     document.getElementById('successModal').classList.remove('show');
   });
